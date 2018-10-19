@@ -16,9 +16,10 @@ const actions = {
   loadKeys: () => ({
     type: 'KEYS_LOAD',
   }),
-  createKey: (player) => ({
+  createKey: (player, displayConfirmation) => ({
     type: 'KEYS_CREATE',
     player,
+    displayConfirmation,
   }),
   setKey: (player, key) => ({
     type: 'KEYS_SET',
@@ -55,7 +56,10 @@ const sagas = createSagas(sagaErrorWrapper({
   KEYS_CREATE: function* (action) {
     const newPrivateKey = keyUtils.create()
     keyUtils.save(action.player, newPrivateKey.asHex())
-    yield put(actions.setKey(action.player, newPrivateKey.asHex()))  
+    yield put(actions.setKey(action.player, newPrivateKey.asHex()))
+    if(action.displayConfirmation) {
+      yield put(snackbar.actions.setMessage(`Keys for player${ action.player } regenerated...`))
+    }
   }
 }))
 

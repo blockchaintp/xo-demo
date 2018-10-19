@@ -41,6 +41,7 @@ class KeyEditor extends React.Component {
           className={ classes.button }
           variant="raised" 
           color="secondary"
+          onClick={ () => this.props.onRegenerate() }
         >
           Regenerate
         </Button>

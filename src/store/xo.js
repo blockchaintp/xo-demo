@@ -63,6 +63,7 @@ const sagas = createSagas(sagaErrorWrapper({
   },
   GAMES_SUBMIT_NEW_GAME: function* (action) {
     const formValues = yield select(state => getFormValues('gameForm')(state))
+    const player1Key = yield select(state => state.keys.player1)
 
     console.log('-------------------------------------------');
     console.dir(formValues)

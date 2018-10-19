@@ -30,12 +30,23 @@ const actions = {
 
 const mutations = {
   KEYS_SET: (state, action) => {
-    state[`player${action.player}`] = action.key
+
+    const privateKeyHex = action.key
+
+    const privateKey = keyUtils.privateKeyFromHex(privateKeyHex)
+    const publicKey = keyUtils.publicKeyFromPrivateKey(privateKey)
+
+    state[`player${action.player}`] = {
+      private: privateKey.asHex(),
+      public: publicKey.asHex(),
+    }
   },
 }
 
 const sagas = createSagas(sagaErrorWrapper({
   KEYS_LOAD: function* (action) {
+
+    // these keys are loaded as hex values
     const player1Key = keyUtils.load(1)
     const player2Key = keyUtils.load(2)
 

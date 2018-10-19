@@ -103,6 +103,22 @@ class Keys extends React.Component {
     )
   }
 
+  getKeyEditor(player) {
+    const {
+      keys,      
+    } = this.props
+    const playerKeys = keys[`player${player}`]
+    if(!playerKeys) return null
+    return (
+      <KeyEditor
+        title={`Player ${player}`}
+        privateKey={ playerKeys.private }
+        publicKey={ playerKeys.public }
+        onRegenerate={ () => this.regenerateKeys(player) }
+      />
+    )
+  }
+
 
 
   render() {
@@ -113,9 +129,6 @@ class Keys extends React.Component {
       classes, 
     } = this.props
 
-    const player1Keys = keyUtils.getHexKeys(keys.player1)
-    const player2Keys = keyUtils.getHexKeys(keys.player2)
-
     return (
       <div className={ classes.root }>
         <Grid 
@@ -123,20 +136,10 @@ class Keys extends React.Component {
           spacing={24}
         >
           <Grid item xs={12} sm={6}>
-            <KeyEditor
-              title='Player 1'
-              privateKey={ player1Keys.private }
-              publicKey={ player1Keys.public }
-              onRegenerate={ () => this.regenerateKeys(1) }
-            />
+            { this.getKeyEditor(1) }
           </Grid>
           <Grid item xs={12} sm={6}>
-            <KeyEditor
-              title='Player 2'
-              privateKey={ player2Keys.private }
-              publicKey={ player2Keys.public }
-              onRegenerate={ () => this.regenerateKeys(2) }
-            />
+            { this.getKeyEditor(2) }
           </Grid>
         </Grid>
         { this.getRegenerateConfirmDialog() }

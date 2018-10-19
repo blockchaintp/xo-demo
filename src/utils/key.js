@@ -9,30 +9,12 @@ const create = () => context.newRandomPrivateKey()
 const privateKeyFromHex = (privateKeyHex) => Secp256k1PrivateKey.fromHex(privateKeyHex)
 const publicKeyFromPrivateKey = (privateKey) => context.getPublicKey(privateKey)
 
-const getHexKeys = (privateKeyHex) => {
-  if(!privateKeyHex) {
-    return {
-      private: '',
-      public: '',
-    }
-  }
-
-  const privateKey = privateKeyFromHex(privateKeyHex)
-  const publicKey = publicKeyFromPrivateKey(privateKey)
-
-  return {
-    private: privateKey.asHex(),
-    public: publicKey.asHex(),
-  }
-}
-
 const utils = {
   load,
   save,
   create,
   privateKeyFromHex,
   publicKeyFromPrivateKey,
-  getHexKeys,
 }
 
 export default utils

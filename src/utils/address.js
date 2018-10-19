@@ -6,11 +6,14 @@ const NAME_LENGTH = 64
 
 const getStringHash = (string) => createHash('sha512').update(string).digest('hex')
 const getAddressPart = (string, length) => getStringHash(string).substring(0, length)
-const getAddress = (gameName) => getAddressPart(TP_NAME, PREFIX_LENGTH) + getAddressPart(gameName, NAME_LENGTH)
+const getPrefix = () => getAddressPart(TP_NAME, PREFIX_LENGTH)
+const getAddress = (gameName) => getPrefix() + getAddressPart(gameName, NAME_LENGTH)
+
 
 const utils = {
   getStringHash,
   getAddressPart,
+  getPrefix,
   getAddress,
 }
 

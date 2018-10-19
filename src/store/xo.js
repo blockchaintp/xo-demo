@@ -83,14 +83,13 @@ const sagas = createSagas(sagaErrorWrapper({
       payload,
     })
 
-    console.log('-------------------------------------------');
-    console.log('-------------------------------------------');
-    console.dir(transactionBytes)
-
-
-    const address = addressUtils.getAddress(gameName)
-    console.log('-------------------------------------------');
-    console.log(address)
+    try {
+      const response = yield call(xoApi.submitTransaction, transactionBytes)
+    } catch(e) {
+      console.log('-------------------------------------------');
+      console.error(e)
+      yield snackbar.actions.setError(e.toString())
+    }
     
   }
 }))

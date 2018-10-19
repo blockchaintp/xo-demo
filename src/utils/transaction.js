@@ -7,7 +7,6 @@ const context = createContext('secp256k1')
 const addressUtils = require('./address')
 const keyUtils = require('./key')
 
-
 const getSigner = (privateKeyHex) => {
   const privateKey = keyUtils.privateKeyFromHex(privateKeyHex)
   return new CryptoFactory(context).newSigner(privateKey)

@@ -9,6 +9,7 @@ import sagaErrorWrapper from '../utils/sagaErrorWrapper'
 import xoApi from '../api/xo'
 import gameUtils from '../utils/game'
 import addressUtils from '../utils/address'
+import transactionUtils from '../utils/transaction'
 
 const state = {
   games: [],
@@ -64,16 +65,29 @@ const sagas = createSagas(sagaErrorWrapper({
   },
   GAMES_SUBMIT_NEW_GAME: function* (action) {
     const formValues = yield select(state => getFormValues('gameForm')(state))
-    const player1Key = yield select(state => state.keys.player1)
+    const player1Keys = yield select(state => state.keys.player1)
     const games = yield select(state => state.xo.games)
     const gameName = formValues.name
     const nameExists = games.filter(game => game.name == gameName).length > 0
-
     if(nameExists) {
       yield put(actions.setNewGameError(`There is aleady a game called ${gameName}`))
       return
     }
     yield put(actions.setNewGameError(''))
+
+    const payload = [gameName,'create',''].join(',')
+
+    const transactionBytes = transactionUtils.singleTransactionBytes({
+      privateKeyHex: player1Keys.private,
+      gameName,
+      payload,
+    })
+
+    console.log('-------------------------------------------');
+    console.log('-------------------------------------------');
+    console.dir(transactionBytes)
+
+
     const address = addressUtils.getAddress(gameName)
     console.log('-------------------------------------------');
     console.log(address)

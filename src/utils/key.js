@@ -17,4 +17,4 @@ const utils = {
   publicKeyFromPrivateKey,
 }
 
-export default utils
+module.exports = utils

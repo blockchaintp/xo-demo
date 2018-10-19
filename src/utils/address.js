@@ -14,4 +14,4 @@ const utils = {
   getAddress,
 }
 
-export default utils
+module.exports = utils

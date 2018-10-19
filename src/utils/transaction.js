@@ -3,52 +3,104 @@ const cbor = require('cbor')
 const {createHash} = require('crypto')
 const protobuf = require('sawtooth-sdk/protobuf')
 
-const TP_NAME = 'xo'
-const PREFIX_LENGTH = 6
-const NAME_LENGTH = 64
+const context = createContext('secp256k1')
+const addressUtils = require('./address')
+const keyUtils = require('./key')
 
-const getStringHash = (string) => createHash('sha512').update(string).digest('hex')
-const getAddressPart = (string, length) => getStringHash(string).substring(0, length)
 
-const getAddress = (gameName) => getAddressPart(TP_NAME, PREFIX_LENGTH) + getAddressPart(gameName, NAME_LENGTH)
+const getSigner = (privateKeyHex) => {
+  const privateKey = keyUtils.privateKeyFromHex(privateKeyHex)
+  return new CryptoFactory(context).newSigner(privateKey)
+}
 
 const createTransaction = (opts) => {
 
   const {
-    privateKey,
+    privateKeyHex,
+    gameName,
     payload,
-  }
+  } = opts
 
-  const context = createContext('secp256k1')
-  const privateKey = context.newRandomPrivateKey()
-  const signer = new CryptoFactory(context).newSigner(privateKey)
-
-  const payload = {
-    Verb: 'set',
-    Name: 'foo',
-    Value: 42
-  }
-
-  const payloadBytes = cbor.encode(payload)
+  const address = addressUtils.getAddress(gameName)
+  const signer = getSigner(privateKeyHex)
 
   const transactionHeaderBytes = protobuf.TransactionHeader.encode({
-    familyName: 'intkey',
+    familyName: 'xo',
     familyVersion: '1.0',
-    inputs: ['1cf1266e282c41be5e4254d8820772c5518a2c5a8c0c7f7eda19594a7eb539453e1ed7'],
-    outputs: ['1cf1266e282c41be5e4254d8820772c5518a2c5a8c0c7f7eda19594a7eb539453e1ed7'],
+    inputs: [address],
+    outputs: [address],
     signerPublicKey: signer.getPublicKey().asHex(),
     batcherPublicKey: signer.getPublicKey().asHex(),
     dependencies: [],
-    payloadSha512: createHash('sha512').update(payloadBytes).digest('hex')
+    payloadSha512: createHash('sha512').update(payload).digest('hex'),
   }).finish()
 
   const signature = signer.sign(transactionHeaderBytes)
 
-  const transaction = protobuf.Transaction.create({
-      header: transactionHeaderBytes,
-      headerSignature: signature,
-      payload: payloadBytes
+  return protobuf.Transaction.create({
+    header: transactionHeaderBytes,
+    headerSignature: signature,
+    payload: Buffer.from(payload, 'utf8'),
+  })
+}
+
+const createBatch = (opts) => {
+
+  const {
+    privateKeyHex,
+    transactions,
+  } = opts
+
+  const signer = getSigner(privateKeyHex)
+
+  const batchHeaderBytes = protobuf.BatchHeader.encode({
+    signerPublicKey: signer.getPublicKey().asHex(),
+    transactionIds: transactions.map((txn) => txn.headerSignature),
+  }).finish()
+
+  const signature = signer.sign(batchHeaderBytes)
+
+  return protobuf.Batch.create({
+    header: batchHeaderBytes,
+    headerSignature: signature,
+    transactions: transactions
+  })
+}
+
+const getBatchListBytes = (batches) => {
+  return protobuf.BatchList.encode({
+    batches
+  }).finish()
+}
+
+// encode a single transaction as a batch list in bytes
+const singleTransactionBytes = (opts) => {
+  const {
+    privateKeyHex,
+    gameName,
+    payload,
+  } = opts
+
+  const transaction = createTransaction({
+    privateKeyHex,
+    gameName,
+    payload,
   })
 
-  console.log(transactionHeaderBytes)
+  const batch = createBatch({
+    privateKeyHex,
+    transactions: [transaction]
+  })
+
+  return getBatchListBytes([batch])
 }
+
+const utils = {
+  getSigner,
+  createTransaction,
+  createBatch,
+  getBatchListBytes,
+  singleTransactionBytes,
+}
+
+module.exports = utils

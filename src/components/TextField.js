@@ -23,6 +23,7 @@ const TextField = ({
   inputProps,
   description,
   disabled,
+  storeError,
   meta: { touched, error, warning }
 }) => {
   return (
@@ -30,7 +31,7 @@ const TextField = ({
       fullWidth
       className={classes.margin}
       aria-describedby={ name + "-helper" }
-      error={ touched && error ? true : false }
+      error={ touched && (error || storeError) ? true : false }
     >
       <InputLabel 
         htmlFor={ name }>{ label }</InputLabel>
@@ -39,14 +40,14 @@ const TextField = ({
         key={ name }
         type={ type }
         disabled={ disabled }
-        error={ touched && error ? true : false }
+        error={ touched && (error || storeError) ? true : false }
         {...input}
         {...inputProps}
       />
       {
-        touched && error ? (
+        touched && (error || storeError) ? (
           <FormHelperText id={ name + "-helper" }>
-            { error }
+            { error || storeError }
           </FormHelperText>
         ) : null
       }

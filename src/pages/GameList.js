@@ -71,7 +71,7 @@ class GameList extends React.Component {
             description="The name for your game"
             validate={ validators.required }
             disabled={ this.props.submitting }
-            error={ xo.newGameError }
+            storeError={ xo.newGameError }
           />
         </DialogContent>
         <DialogActions>

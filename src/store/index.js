@@ -7,6 +7,7 @@ import createHistory from 'history/createBrowserHistory'
 import { routes } from '../router'
 import snackbarModule from './snackbar'
 import xoModule from './xo'
+import keysModule from './keys'
 
 const history = createHistory()
 const router = connectRoutes(history, routes) 
@@ -14,6 +15,7 @@ const router = connectRoutes(history, routes)
 const modules = [  
   snackbarModule,
   xoModule,
+  keysModule,
 ]
 
 const config = {

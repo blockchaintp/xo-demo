@@ -7,6 +7,9 @@ import Grid from '@material-ui/core/Grid'
 
 import KeyEditor from '../components/KeyEditor'
 import xoModule from '../store/xo'
+import keysModule from '../store/keys'
+
+import keyUtils from '../utils/key'
 
 const styles = theme => {
   return {
@@ -18,19 +21,20 @@ const styles = theme => {
 
 @connectStore({
   xo: xoModule,
+  keys: keysModule,
 })
 class Keys extends React.Component {
-
-  componentDidMount() {
-    //this.props.xo.loadKeys()
-  }
   
   render() {
 
-    const { 
+    const {
       xo,
+      keys,
       classes, 
     } = this.props
+
+    const player1Keys = keyUtils.getHexKeys(keys.player1)
+    const player2Keys = keyUtils.getHexKeys(keys.player2)
 
     return (
       <div className={ classes.root }>
@@ -41,11 +45,15 @@ class Keys extends React.Component {
           <Grid item xs={12} sm={6}>
             <KeyEditor
               title='Player 1'
+              privateKey={ player1Keys.private }
+              publicKey={ player1Keys.public }
             />
           </Grid>
           <Grid item xs={12} sm={6}>
             <KeyEditor
               title='Player 2'
+              privateKey={ player2Keys.private }
+              publicKey={ player2Keys.public }
             />
           </Grid>
         </Grid>

@@ -30,11 +30,11 @@ class KeyEditor extends React.Component {
         </Typography>
 
         <Typography variant='body1'>
-          Private Key: <b></b>
+          Private Key Hex: <b>{ this.props.privateKey }</b>
         </Typography>
 
         <Typography variant='body1'>
-          Public Key: <b></b>
+          Public Key Hex: <b>{ this.props.publicKey }</b>
         </Typography>
 
         <Button
@@ -42,7 +42,7 @@ class KeyEditor extends React.Component {
           variant="raised" 
           color="secondary"
         >
-          Refresh
+          Regenerate
         </Button>
 
       </Paper>

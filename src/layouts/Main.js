@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography'
 import Snackbar from '@material-ui/core/Snackbar'
 
 import snackbarModule from '../store/snackbar'
+import keysModule from '../store/keys'
 
 import AppBar from '../components/AppBar'
 
@@ -26,9 +27,14 @@ const styles = theme => ({
 
 @connectStore({
   snackbar: snackbarModule,
+  keys: keysModule,
 })
 class Layout extends React.Component {
 
+  componentDidMount() {
+    this.props.keys.loadKeys()
+  }
+  
   render() {
     const { classes, snackbar } = this.props
 

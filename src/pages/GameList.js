@@ -43,11 +43,11 @@ const styles = theme => {
 class GameList extends React.Component {
 
   componentDidMount() {
-    this.props.xo.loadGameLoopStart()
+    this.props.xo.loadGameListLoopStart()
   }
 
   componentWillUnmount() {
-    this.props.xo.loadGameLoopStop()
+    this.props.xo.loadGameListLoopStop()
   }
 
   closeNewGameWindow() {

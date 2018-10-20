@@ -21,15 +21,26 @@ const state = {
 }
 
 const actions = {
-  loadGameLoopStart: () => ({
-    type: 'GAMES_LOAD_LOOP_START',
+  loadGameListLoopStart: () => ({
+    type: 'GAMES_LOAD_LIST_LOOP_START',
+  }),
+  loadGameListLoopStop: () => ({
+    type: 'GAMES_LOAD_LIST_LOOP_STOP',
+  }),
+  loadGameLoopStart: (name) => ({
+    type: 'GAMES_LOAD_GAME_LOOP_START',
+    name,
   }),
   loadGameLoopStop: () => ({
-    type: 'GAMES_LOAD_LOOP_STOP',
+    type: 'GAMES_LOAD_GAME_LOOP_STOP',
   }),
   setGames: (games) => ({
     type: 'GAMES_SET_GAMES',
     games,
+  }),
+  setCurrentGame: (game) => ({
+    type: 'GAMES_SET_CURRENT_GAME',
+    game,
   }),
   resetNewGameForm: () => initialize('gameForm', {}),
   submitNewGameForm: () => ({
@@ -47,6 +58,9 @@ const actions = {
     type: 'GAMES_DELETE_GAME',
     name,
   }),
+  viewGames: () => ({
+    type: 'PAGE_HOME',
+  }),
   viewGame: (name) => ({
     type: 'PAGE_VIEW_GAME',
     payload: {
@@ -59,6 +73,9 @@ const mutations = {
   GAMES_SET_GAMES: (state, action) => {
     state.games = action.games
   },
+  GAMES_SET_CURRENT_GAME: (state, action) => {
+    state.currentGame = action.game
+  },
   GAMES_SET_NEW_GAME_WINDOW_OPEN: (state, action) => {
     state.newGameWindowOpen = action.value
   },
@@ -67,7 +84,7 @@ const mutations = {
   },
 }
 
-function* loadGamesLoop() {
+function* loadGameListLoop() {
   while (true) {
     try {
       const response = yield call(xoApi.listGames)
@@ -76,17 +93,37 @@ function* loadGamesLoop() {
     } catch(e) {
       console.log('-------------------------------------------');
       console.error(e)
-      yield put(actions.stopLoadGameLoop())
+      yield put(actions.loadGameListLoopStop())
+    }
+    yield call(delay, 1000)
+  }
+}
+
+function* loadGameLoop(name) {
+  while (true) {
+    try {
+      const response = yield call(xoApi.loadGame, name)
+      const games = gameUtils.decode(response.data.data[0])
+      yield put(actions.setCurrentGame(games))
+    } catch(e) {
+      console.log('-------------------------------------------');
+      console.error(e)
+      yield put(actions.loadGameLoopStop())
     }
     yield call(delay, 1000)
   }
 }
 
 const sagas = createSagas(sagaErrorWrapper({
-  GAMES_LOAD_LOOP_START: function* (action) {
-    const loadGamesLoopTask = yield fork(loadGamesLoop)
-    yield take(action => action.type == 'GAMES_LOAD_LOOP_STOP')
-    yield cancel(loadGamesLoopTask)
+  GAMES_LOAD_LIST_LOOP_START: function* (action) {
+    const loadGameListLoopTask = yield fork(loadGameListLoop)
+    yield take(action => action.type == 'GAMES_LOAD_LIST_LOOP_STOP')
+    yield cancel(loadGameListLoopTask)
+  },
+  GAMES_LOAD_GAME_LOOP_START: function* (action) {
+    const loadGameLoopTask = yield fork(loadGameLoop, action.name)
+    yield take(action => action.type == 'GAMES_LOAD_GAME_LOOP_STOP')
+    yield cancel(loadGameLoopTask)
   },
   GAMES_SUBMIT_NEW_GAME: function* (action) {
     const formValues = yield select(state => getFormValues('gameForm')(state))

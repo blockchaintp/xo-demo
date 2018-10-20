@@ -9,6 +9,10 @@ export default {
     return axios.get(url(`/state?address=${addressUtils.getPrefix()}`))
   },
 
+  loadGame(name) {
+    return axios.get(url(`/state?address=${addressUtils.getGameAddress(name)}`))
+  },
+
   submitTransaction(payload) {
     return new Promise(function(resolve, reject) {
       var xhr = new XMLHttpRequest

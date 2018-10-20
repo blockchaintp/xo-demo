@@ -20,7 +20,7 @@ const createTransaction = (opts) => {
     payload,
   } = opts
 
-  const address = addressUtils.getAddress(gameName)
+  const address = addressUtils.getGameAddress(gameName)
   const signer = getSigner(privateKeyHex)
 
   const transactionHeaderBytes = protobuf.TransactionHeader.encode({

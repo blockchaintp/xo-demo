@@ -28,7 +28,10 @@ const actions = {
 
 const mutations = {
   VALIDATOR_SET_TRANSACTIONS: (state, action) => {
-    state.transactions = action.transactions
+    const newTransactions = action.transactions
+      .filter(transaction => transaction.header.family_name == 'xo')
+      .slice(0, 10)
+    state.transactions = newTransactions
   },
 }
 

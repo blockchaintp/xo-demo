@@ -45,9 +45,7 @@ class TransactionTable extends React.Component {
       name: 'signature',
     }]
 
-
     const data = transactions
-      .filter(transaction => transaction.header.family_name == 'xo')
       .map(transaction => {
         return {
           payload: atob(transaction.payload),

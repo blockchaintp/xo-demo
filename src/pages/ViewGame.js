@@ -14,6 +14,7 @@ import xoModule from '../store/xo'
 import keysModule from '../store/keys'
 
 import GameInfo from '../components/GameInfo'
+import GameBoard from '../components/GameBoard'
 
 import validators from '../utils/validators'
 
@@ -21,6 +22,9 @@ const styles = theme => {
   return {
     root: {
       padding: theme.spacing.unit * 4,
+    },
+    info: {
+      padding: '10px',
     }
   }
 }
@@ -69,15 +73,19 @@ class ViewGame extends React.Component {
           spacing={24}
         >
           <Grid item xs={12} sm={3}>
-            <GameInfo
-              title={ xo.currentGame.name }
-              onBack={ () => xo.viewGames() }
-              player1Keys={ player1Keys }
-              player2Keys={ player2Keys }
-            />
+            <div className={ classes.info }>
+              <GameInfo
+                title={ xo.currentGame.name }
+                onBack={ () => xo.viewGames() }
+                player1Keys={ player1Keys }
+                player2Keys={ player2Keys }
+              />
+            </div>
           </Grid>
           <Grid item xs={12} sm={9}>
-            Game
+            <GameBoard
+              gameState={ xo.currentGame.board }
+            />
           </Grid>
         </Grid>
       </div>

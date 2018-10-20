@@ -5,6 +5,7 @@ import { withStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
+import Divider from '@material-ui/core/Divider'
 
 const styles = theme => ({
   root: {
@@ -18,7 +19,11 @@ const styles = theme => ({
   },
   smallText: {
     fontSize: '0.7em'
-  }
+  },
+  divider: {
+    marginTop: theme.spacing.unit * 2,
+    marginBottom: theme.spacing.unit * 2,
+  },
 })
 
 class GameInfo extends React.Component {
@@ -44,6 +49,33 @@ class GameInfo extends React.Component {
     )
   }
 
+  getMoveDescription(keys) {
+    if(!keys.game || keys.game == keys.local) {
+      return 'You can move!'
+    }
+    else {
+      return 'Waiting for other player...'
+    }
+  }
+
+  getNextMove() {
+    const {
+      player1Keys,
+      player2Keys,
+      state,
+    } = this.props
+
+    if(state == 'P1-NEXT') {
+      return this.getMoveDescription(player1Keys)
+    }
+    else if(state == 'P2-NEXT') {
+      return this.getMoveDescription(player2Keys)
+    }
+    else {
+      return 'unknown'
+    }
+  }
+
   render() {
     const { classes } = this.props
 
@@ -53,8 +85,22 @@ class GameInfo extends React.Component {
           { this.props.title }
         </Typography>
 
+        <Divider className={ classes.divider } />
+
         { this.getPlayer(1, this.props.player1Keys) }
         { this.getPlayer(2, this.props.player2Keys) }
+
+        <Typography variant='body1'>
+          State: <b>{ this.props.state }</b>
+        </Typography>
+
+        <Divider className={ classes.divider } />
+
+        <Typography variant='body2'>
+          { this.getNextMove() }
+        </Typography>
+
+        <Divider className={ classes.divider } />
 
         <Button
           className={ classes.button }

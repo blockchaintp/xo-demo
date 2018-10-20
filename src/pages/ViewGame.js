@@ -79,6 +79,7 @@ class ViewGame extends React.Component {
                 onBack={ () => xo.viewGames() }
                 player1Keys={ player1Keys }
                 player2Keys={ player2Keys }
+                state={ xo.currentGame.state }
               />
             </div>
           </Grid>

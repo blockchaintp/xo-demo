@@ -13,24 +13,42 @@ const styles = theme => ({
   cell: {
     display: 'inline-block',
     padding: '10px',
+    cursor: 'pointer',
   },
   cellPaper: {
     width: '100px',
     height: '100px',
-
-  }
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 })
 
 class GameBoard extends React.Component {
+
+  getCellContents(cell) {
+    const {
+      classes,
+    } = this.props
+    return (
+      <div className={ classes.cellContents }>
+        { cell.code == '-' ? '' : cell.code }
+      </div>
+    )
+  }
 
   getCell(cell, j) {
     const {
       classes,
     } = this.props
     return (
-      <div className={ classes.cell } key={ j }>
+      <div 
+        className={ classes.cell } 
+        key={ j }
+        onClick={ () => this.clickCell(cell.index) }
+      >
         <Paper className={ classes.cellPaper }>
-          { cell }
+          { this.getCellContents(cell) }
         </Paper>
       </div>
     )
@@ -49,6 +67,11 @@ class GameBoard extends React.Component {
     )
   }
 
+  clickCell(index) {
+    console.log('-------------------------------------------');
+    console.log(index)
+  }
+
   render() {
     const { 
       classes,
@@ -57,17 +80,17 @@ class GameBoard extends React.Component {
 
     const cells = gameState.split('')
 
-    const rows = cells.reduce((all, cell, i) => {
-      if(i % 3 == 0) {
+    const rows = cells.reduce((all, code, index) => {
+      if(index % 3 == 0) {
         all.push([])
       }
       const currentRow = all[all.length-1]
-      currentRow.push(cell)
+      currentRow.push({
+        code,
+        index,
+      })
       return all
     }, [])
-
-    console.log('-------------------------------------------');
-    console.dir(rows)
 
     return (
       <div>

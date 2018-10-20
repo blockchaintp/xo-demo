@@ -1,5 +1,6 @@
 import { createSagas } from 'redux-box'
 import { call, put, select, fork, take, cancel } from 'redux-saga/effects'
+import { delay } from 'redux-saga'
 import { initialize, getFormValues } from 'redux-form'
 
 import apiUtils from '../utils/api'
@@ -20,8 +21,11 @@ const state = {
 }
 
 const actions = {
-  loadGames: () => ({
-    type: 'GAMES_LOAD_GAMES',
+  loadGameLoopStart: () => ({
+    type: 'GAMES_LOAD_LOOP_START',
+  }),
+  loadGameLoopStop: () => ({
+    type: 'GAMES_LOAD_LOOP_STOP',
   }),
   setGames: (games) => ({
     type: 'GAMES_SET_GAMES',
@@ -63,8 +67,8 @@ const mutations = {
   },
 }
 
-const sagas = createSagas(sagaErrorWrapper({
-  GAMES_LOAD_GAMES: function* (action) {
+function* loadGamesLoop() {
+  while (true) {
     try {
       const response = yield call(xoApi.listGames)
       const games = (response.data.data || []).map(gameUtils.decode)
@@ -72,8 +76,17 @@ const sagas = createSagas(sagaErrorWrapper({
     } catch(e) {
       console.log('-------------------------------------------');
       console.error(e)
-      yield snackbar.actions.setError(e.toString())
+      yield put(actions.stopLoadGameLoop())
     }
+    yield call(delay, 1000)
+  }
+}
+
+const sagas = createSagas(sagaErrorWrapper({
+  GAMES_LOAD_LOOP_START: function* (action) {
+    const loadGamesLoopTask = yield fork(loadGamesLoop)
+    yield take(action => action.type == 'GAMES_LOAD_LOOP_STOP')
+    yield cancel(loadGamesLoopTask)
   },
   GAMES_SUBMIT_NEW_GAME: function* (action) {
     const formValues = yield select(state => getFormValues('gameForm')(state))
@@ -99,8 +112,9 @@ const sagas = createSagas(sagaErrorWrapper({
     try {
       const response = yield call(xoApi.submitTransaction, transactionBytes)
       yield put(actions.setNewGameWindowOpen(false))
+      yield put(actions.resetNewGameForm())
       yield put(snackbar.actions.setMessage(`game: ${gameName} created`))
-      yield put(actions.viewGame(gameName))
+      //yield put(actions.viewGame(gameName))
     } catch(e) {
       console.log('-------------------------------------------');
       console.error(e)

@@ -22,6 +22,18 @@ const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  colorx: {
+    fontWeight: 'bold',
+    color: theme.palette.primary.main,
+  },
+  'color-': {
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+  coloro: {
+    fontWeight: 'bold',
+    color: theme.palette.secondary.main,
+  },
 })
 
 class GameBoard extends React.Component {
@@ -29,10 +41,12 @@ class GameBoard extends React.Component {
   getCellContents(cell) {
     const {
       classes,
-    } = this.props
+    } = this.props    
     return (
       <div className={ classes.cellContents }>
-        { cell.code == '-' ? '' : cell.code }
+        <Typography variant='display3' className={ classes['color' + cell.code.toLowerCase()] }>
+          { cell.code }
+        </Typography>
       </div>
     )
   }

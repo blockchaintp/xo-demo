@@ -19,6 +19,7 @@ const styles = theme => ({
     fontSize: '0.8em'
   },
   codeWrapper: {
+    maxHeight: '500px',
     overflow: 'auto'
   },
 })
@@ -34,6 +35,7 @@ class TransactionList extends React.Component {
     return (
       <Paper className={ classes.root }>
         <Typography variant='title'>Raw Transactions</Typography>
+        <Typography variant='body1'>(the 10 most recent transactions)</Typography>
         <Divider className={ classes.divider } />
         <div className={ classes.codeWrapper }>
           <pre className={ classes.code }>

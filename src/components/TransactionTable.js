@@ -57,6 +57,7 @@ class TransactionTable extends React.Component {
     return (
       <Paper className={ classes.root }>
         <Typography variant='title'>Transaction List</Typography>
+        <Typography variant='body1'>(the 10 most recent transactions)</Typography>
         <Divider className={ classes.divider } />
         <Table className={classes.table}>
           <TableHead>

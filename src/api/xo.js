@@ -9,6 +9,10 @@ export default {
     return axios.get(url(`/state?address=${addressUtils.getPrefix()}`))
   },
 
+  listTransactions() {
+    return axios.get(url(`/transactions?limit=5`))
+  },
+
   loadGame(name) {
     return axios.get(url(`/state?address=${addressUtils.getGameAddress(name)}`))
   },

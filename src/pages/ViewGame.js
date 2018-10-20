@@ -12,6 +12,7 @@ import Button from '@material-ui/core/Button'
 
 import xoModule from '../store/xo'
 import keysModule from '../store/keys'
+import validatorModule from '../store/validator'
 
 import GameInfo from '../components/GameInfo'
 import GameBoard from '../components/GameBoard'
@@ -35,15 +36,18 @@ const styles = theme => {
 @connectStore({
   xo: xoModule,
   keys: keysModule,
+  validator: validatorModule,
 })
 class ViewGame extends React.Component {
 
   componentDidMount() {
     this.props.xo.loadGameLoopStart(this.props.gameName)
+    this.props.validator.loadTransactionsLoopStart()
   }
 
   componentWillUnmount() {
     this.props.xo.loadGameLoopStop()
+    this.props.validator.loadTransactionsLoopStop()
   }
 
   render() {

@@ -8,6 +8,7 @@ import { routes } from '../router'
 import snackbarModule from './snackbar'
 import xoModule from './xo'
 import keysModule from './keys'
+import validatorModule from './validator'
 
 const history = createHistory()
 const router = connectRoutes(history, routes) 
@@ -16,6 +17,7 @@ const modules = [
   snackbarModule,
   xoModule,
   keysModule,
+  validatorModule,
 ]
 
 const config = {

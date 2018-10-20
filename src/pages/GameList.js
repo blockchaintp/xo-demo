@@ -82,7 +82,7 @@ class GameList extends React.Component {
             Cancel
           </Button>
           <Button 
-            color="secondary" 
+            color="primary" 
             variant="raised"
             autoFocus
             onClick={ () => xo.submitNewGameForm() }
@@ -104,7 +104,7 @@ class GameList extends React.Component {
     
     const fields =[{
       title: 'Name',
-      name: 'name',
+      name: 'id',
     },{
       title: 'Address',
       name: 'address',
@@ -119,7 +119,7 @@ class GameList extends React.Component {
 
     const data = xo.games.map(gameData => {
       return {
-        name: `${gameData.name}`,
+        id: `${gameData.name}`,
         address: `${gameData.address}`,
         board: `${gameData.board}`,
         state: `${gameData.state}`,
@@ -131,10 +131,8 @@ class GameList extends React.Component {
         <GenericTable
           title="Game"
           noSelect
-          noDelete
           data={ data }
           fields={ fields }
-          onAdd={ () => xo.setNewGameWindowOpen(true) }
           addTitle='Create'
           icons={{
             edit: OpenIcon
@@ -142,7 +140,9 @@ class GameList extends React.Component {
           tooltips={{
             edit: 'View'
           }}
-          onEdit={ (id) => console.log('edit') }
+          onAdd={ () => xo.setNewGameWindowOpen(true) }
+          onDelete={ (ids) => xo.deleteGame(ids[0]) }
+          onEdit={ (id) => xo.viewGame(id) }
           getOptions={ () => null }
         />
         { this.getNewGameDialog() }

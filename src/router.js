@@ -9,6 +9,7 @@ import { connect } from 'react-redux'
   
 */
 import GameList from './pages/GameList'
+import ViewGame from './pages/ViewGame'
 import Keys from './pages/Keys'
 
 /*
@@ -34,6 +35,10 @@ export const routes = {
   'PAGE_KEYS': {
     path: '/keys',
     component: Keys,
+  },
+  'PAGE_VIEW_GAME': {
+    path: '/game/:name',
+    component: ViewGame,
   },
 }
 

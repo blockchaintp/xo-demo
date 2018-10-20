@@ -8,11 +8,13 @@ import sagaErrorWrapper from '../utils/sagaErrorWrapper'
 
 import xoApi from '../api/xo'
 import gameUtils from '../utils/game'
+import keyUtils from '../utils/key'
 import addressUtils from '../utils/address'
 import transactionUtils from '../utils/transaction'
 
 const state = {
   games: [],
+  currentGame: null,
   newGameWindowOpen: false,
   newGameError: null,
 }
@@ -36,7 +38,17 @@ const actions = {
   setNewGameError: (value) => ({
     type: 'GAMES_SET_NEW_GAME_ERROR',
     value,
-  })
+  }),
+  deleteGame: (name) => ({
+    type: 'GAMES_DELETE_GAME',
+    name,
+  }),
+  viewGame: (name) => ({
+    type: 'PAGE_VIEW_GAME',
+    payload: {
+      name
+    },
+  }),
 }
 
 const mutations = {
@@ -65,7 +77,6 @@ const sagas = createSagas(sagaErrorWrapper({
   },
   GAMES_SUBMIT_NEW_GAME: function* (action) {
     const formValues = yield select(state => getFormValues('gameForm')(state))
-    const player1Keys = yield select(state => state.keys.player1)
     const games = yield select(state => state.xo.games)
     const gameName = formValues.name
     const nameExists = games.filter(game => game.name == gameName).length > 0
@@ -77,21 +88,49 @@ const sagas = createSagas(sagaErrorWrapper({
 
     const payload = [gameName,'create',''].join(',')
 
+    const privateKey = keyUtils.create()
+
     const transactionBytes = transactionUtils.singleTransactionBytes({
-      privateKeyHex: player1Keys.private,
+      privateKeyHex: privateKey.asHex(),
       gameName,
       payload,
     })
 
     try {
       const response = yield call(xoApi.submitTransaction, transactionBytes)
+      yield put(actions.setNewGameWindowOpen(false))
+      yield put(snackbar.actions.setMessage(`game: ${gameName} created`))
+      yield put(actions.viewGame(gameName))
     } catch(e) {
       console.log('-------------------------------------------');
       console.error(e)
-      yield snackbar.actions.setError(e.toString())
+      yield put(actions.setNewGameError(e.toString()))
+      yield put(snackbar.actions.setError(e.toString()))
     }
     
-  }
+  },
+
+  GAMES_DELETE_GAME: function* (action) {
+    const gameName = action.name
+    const payload = [gameName,'delete',''].join(',')
+
+    const privateKey = keyUtils.create()
+
+    const transactionBytes = transactionUtils.singleTransactionBytes({
+      privateKeyHex: privateKey.asHex(),
+      gameName,
+      payload,
+    })
+
+    try {
+      const response = yield call(xoApi.submitTransaction, transactionBytes)
+      yield put(snackbar.actions.setMessage(`game: ${gameName} deleted`))
+    } catch(e) {
+      console.log('-------------------------------------------');
+      console.error(e)
+      yield put(snackbar.actions.setError(e.toString()))
+    }
+  },
 }))
 
 const module = {

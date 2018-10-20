@@ -14,11 +14,14 @@ export default {
       var xhr = new XMLHttpRequest
       xhr.open("POST", url(`/batches`), false)
       xhr.setRequestHeader('Content-Type', 'application/octet-stream');
-      xhr.onload = function (oEvent) {
-        console.log('-------------------------------------------');
-        console.log('-------------------------------------------');
-        console.log('done!!!')
-        console.dir(oEvent)
+      xhr.onreadystatechange = function (oEvent) {  
+        if (xhr.readyState === 4) {  
+          if (xhr.status === 202) {  
+            resolve()  
+          } else {
+            reject(oEvent.currentTarget.responseText)
+          }  
+        }  
       }
       xhr.send(payload)
     })

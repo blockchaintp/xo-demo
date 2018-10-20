@@ -18,6 +18,7 @@ import validatorModule from '../store/validator'
 import GameInfo from '../components/GameInfo'
 import GameBoard from '../components/GameBoard'
 import TransactionList from '../components/TransactionList'
+import TransactionTable from '../components/TransactionTable'
 
 import validators from '../utils/validators'
 
@@ -102,7 +103,14 @@ class ViewGame extends React.Component {
           container 
           spacing={24}
         >
-          <Grid item xs={12}>
+          <Grid item xs={12} sm={6}>
+            <div className={ classes.paperPadding }>
+              <TransactionTable
+                transactions={ validator.transactions }
+              />
+            </div>
+          </Grid>
+          <Grid item xs={12} sm={6}>
             <div className={ classes.paperPadding }>
               <TransactionList
                 transactions={ validator.transactions }

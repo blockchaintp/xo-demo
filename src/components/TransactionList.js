@@ -17,7 +17,10 @@ const styles = theme => ({
   },
   code: {
     fontSize: '0.8em'
-  }
+  },
+  codeWrapper: {
+    overflow: 'auto'
+  },
 })
 
 class TransactionList extends React.Component {
@@ -30,13 +33,15 @@ class TransactionList extends React.Component {
 
     return (
       <Paper className={ classes.root }>
-        <Typography variant='title'>Transactions</Typography>
+        <Typography variant='title'>Raw Transactions</Typography>
         <Divider className={ classes.divider } />
-        <pre className={ classes.code }>
-          <code>
-            { JSON.stringify(transactions, null, 4) }
-          </code>
-        </pre>
+        <div className={ classes.codeWrapper }>
+          <pre className={ classes.code }>
+            <code>
+              { JSON.stringify(transactions, null, 4) }
+            </code>
+          </pre>
+        </div>
       </Paper>
     )
   }

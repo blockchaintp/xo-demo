@@ -10,7 +10,7 @@ export default {
   },
 
   listTransactions() {
-    return axios.get(url(`/transactions?limit=5`))
+    return axios.get(url(`/transactions?limit=10`))
   },
 
   loadGame(name) {

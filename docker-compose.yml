@@ -6,4 +6,4 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.multistage
-    image: sextant:${ISOLATION_ID}
+    image: xo-demo:${ISOLATION_ID}

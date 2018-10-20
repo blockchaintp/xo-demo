@@ -1,5 +1,5 @@
 {
-  "name": "xo",
+  "name": "xo-demo",
   "private": true,
   "version": "1.0.0",
   "description": "frontend for the sawtooth tic-tac-toe transaction processor",

@@ -46,13 +46,15 @@ class TransactionTable extends React.Component {
     }]
 
 
-    const data = transactions.map(transaction => {
-      return {
-        payload: atob(transaction.payload),
-        signature: transaction.header_signature.substring(0, 16),
-        signer: transaction.header.signer_public_key.substring(0, 16),
-      }
-    })
+    const data = transactions
+      .filter(transaction => transaction.header.family_name == 'xo')
+      .map(transaction => {
+        return {
+          payload: atob(transaction.payload),
+          signature: transaction.header_signature.substring(0, 16),
+          signer: transaction.header.signer_public_key.substring(0, 16),
+        }
+      })
 
     return (
       <Paper className={ classes.root }>

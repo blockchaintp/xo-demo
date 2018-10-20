@@ -49,6 +49,7 @@ class ViewGame extends React.Component {
 
   componentWillUnmount() {
     this.props.xo.loadGameLoopStop()
+    this.props.xo.setCurrentGame(null)
     this.props.validator.loadTransactionsLoopStop()
   }
 
@@ -93,6 +94,7 @@ class ViewGame extends React.Component {
           <Grid item xs={12} sm={9}>
             <GameBoard
               gameState={ xo.currentGame.board }
+              onMove={ (index) => xo.makeMove(index) }
             />
           </Grid>
         </Grid>

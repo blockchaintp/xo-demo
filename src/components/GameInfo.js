@@ -71,8 +71,17 @@ class GameInfo extends React.Component {
     else if(state == 'P2-NEXT') {
       return this.getMoveDescription(player2Keys)
     }
+    else if(state == 'P1-WIN') {
+      return 'Player 1 has won the game!'
+    }
+    else if(state == 'P2-WIN') {
+      return 'Player 2 has won the game!'
+    }
+    else if(state == 'TIE') {
+      return 'The game was a draw.'
+    }
     else {
-      return 'unknown'
+      return 'Unknown'
     }
   }
 

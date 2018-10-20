@@ -45,7 +45,9 @@ class GameBoard extends React.Component {
       <div 
         className={ classes.cell } 
         key={ j }
-        onClick={ () => this.clickCell(cell.index) }
+        onClick={ () => {
+          this.clickCell(cell.index)
+        } }
       >
         <Paper className={ classes.cellPaper }>
           { this.getCellContents(cell) }
@@ -68,8 +70,7 @@ class GameBoard extends React.Component {
   }
 
   clickCell(index) {
-    console.log('-------------------------------------------');
-    console.log(index)
+    this.props.onMove(index)
   }
 
   render() {

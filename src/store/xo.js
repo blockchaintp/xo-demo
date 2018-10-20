@@ -67,6 +67,10 @@ const actions = {
       name
     },
   }),
+  makeMove: (index) => ({
+    type: 'GAMES_MOVE',
+    index,
+  })
 }
 
 const mutations = {
@@ -182,6 +186,72 @@ const sagas = createSagas(sagaErrorWrapper({
       yield put(snackbar.actions.setError(e.toString()))
     }
   },
+
+  GAMES_MOVE: function* (action) {
+
+    const moveIndex = action.index
+    const currentGame = yield select(state => state.xo.currentGame)
+    const player1LocalKeys = yield select(state => state.keys.player1)
+    const player2LocalKeys = yield select(state => state.keys.player2)
+    const gameName = currentGame.name
+
+    const player1Keys = {
+      local: player1LocalKeys.public,
+      game: currentGame.player1Key,
+    }
+
+    const player2Keys = {
+      local: player2LocalKeys.public,
+      game: currentGame.player2Key,
+    }
+
+    const board = currentGame.board
+    const moveCurrentCode = board.charAt(moveIndex)
+
+    let privateKeyToUse = null
+
+    // check the player can play
+    if(currentGame.state == 'P1-NEXT') {
+      if(currentGame.player1Key && player1LocalKeys.public != currentGame.player1Key) {
+        yield put(snackbar.actions.setError(`it is not your turn - waiting for other player`))
+        return 
+      }
+      privateKeyToUse = player1LocalKeys.private
+    }
+    else if (currentGame.state == 'P2-NEXT') {
+      if(currentGame.player2Key && player2LocalKeys.public != currentGame.player2Key) {
+        yield put(snackbar.actions.setError(`it is not your turn - waiting for other player`))
+        return 
+      }
+      privateKeyToUse = player2LocalKeys.private
+    }
+    else {
+      yield put(snackbar.actions.setError(`this game cannot be played anymore`))
+      return
+    }
+
+    if(moveCurrentCode != '-') {
+      yield put(snackbar.actions.setError(`that space is already taken, please choose another`))
+      return
+    }
+    
+    const payload = [gameName,'take',moveIndex+1].join(',')
+
+    const transactionBytes = transactionUtils.singleTransactionBytes({
+      privateKeyHex: privateKeyToUse,
+      gameName,
+      payload,
+    })
+
+    try {
+      const response = yield call(xoApi.submitTransaction, transactionBytes)
+      yield put(snackbar.actions.setMessage(`transaction submitted`))
+    } catch(e) {
+      console.log('-------------------------------------------');
+      console.error(e)
+      yield put(snackbar.actions.setError(e.toString()))
+    }
+  }
 }))
 
 const module = {

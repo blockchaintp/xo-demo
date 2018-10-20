@@ -9,6 +9,7 @@ import { lighten } from '@material-ui/core/styles/colorManipulator'
 import Grid from '@material-ui/core/Grid'
 import OpenIcon from '@material-ui/icons/OpenInNew'
 import Button from '@material-ui/core/Button'
+import Paper from '@material-ui/core/Paper'
 
 import xoModule from '../store/xo'
 import keysModule from '../store/keys'
@@ -16,6 +17,7 @@ import validatorModule from '../store/validator'
 
 import GameInfo from '../components/GameInfo'
 import GameBoard from '../components/GameBoard'
+import TransactionList from '../components/TransactionList'
 
 import validators from '../utils/validators'
 
@@ -24,9 +26,9 @@ const styles = theme => {
     root: {
       padding: theme.spacing.unit * 4,
     },
-    info: {
+    paperPadding: {
       padding: '10px',
-    }
+    },
   }
 }
 
@@ -54,6 +56,7 @@ class ViewGame extends React.Component {
 
     const { 
       xo,
+      validator,
       keys,
       classes, 
     } = this.props
@@ -77,7 +80,7 @@ class ViewGame extends React.Component {
           spacing={24}
         >
           <Grid item xs={12} sm={3}>
-            <div className={ classes.info }>
+            <div className={ classes.paperPadding }>
               <GameInfo
                 title={ xo.currentGame.name }
                 onBack={ () => xo.viewGames() }
@@ -91,6 +94,18 @@ class ViewGame extends React.Component {
             <GameBoard
               gameState={ xo.currentGame.board }
             />
+          </Grid>
+        </Grid>
+        <Grid 
+          container 
+          spacing={24}
+        >
+          <Grid item xs={12}>
+            <div className={ classes.paperPadding }>
+              <TransactionList
+                transactions={ validator.transactions }
+              />
+            </div>
           </Grid>
         </Grid>
       </div>

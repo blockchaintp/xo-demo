@@ -15,6 +15,7 @@ import transactionUtils from '../utils/transaction'
 
 const state = {
   games: [],
+  currentPlayer: '1',
   currentGame: null,
   newGameWindowOpen: false,
   newGameError: null,
@@ -70,6 +71,10 @@ const actions = {
   makeMove: (index) => ({
     type: 'GAMES_MOVE',
     index,
+  }),
+  updateCurrentPlayer: (value) => ({
+    type: 'GAMES_UPDATE_CURRENT_PLAYER',
+    value,
   })
 }
 
@@ -86,6 +91,9 @@ const mutations = {
   GAMES_SET_NEW_GAME_ERROR: (state, action) => {
     state.newGameError = action.value
   },
+  GAMES_UPDATE_CURRENT_PLAYER: (state, action) => {
+    state.currentPlayer = action.value
+  }
 }
 
 function* loadGameListLoop() {
@@ -191,6 +199,7 @@ const sagas = createSagas(sagaErrorWrapper({
 
     const moveIndex = action.index
     const currentGame = yield select(state => state.xo.currentGame)
+    const currentPlayer = yield select(state => state.xo.currentPlayer)
     const player1LocalKeys = yield select(state => state.keys.player1)
     const player2LocalKeys = yield select(state => state.keys.player2)
     const gameName = currentGame.name
@@ -211,30 +220,13 @@ const sagas = createSagas(sagaErrorWrapper({
     let privateKeyToUse = null
 
     // check the player can play
-    if(currentGame.state == 'P1-NEXT') {
-      if(currentGame.player1Key && player1LocalKeys.public != currentGame.player1Key) {
-        yield put(snackbar.actions.setError(`it is not your turn - waiting for other player`))
-        return 
-      }
+    if(currentPlayer == '1') {
       privateKeyToUse = player1LocalKeys.private
     }
-    else if (currentGame.state == 'P2-NEXT') {
-      if(currentGame.player2Key && player2LocalKeys.public != currentGame.player2Key) {
-        yield put(snackbar.actions.setError(`it is not your turn - waiting for other player`))
-        return 
-      }
+    else if (currentPlayer == '2') {
       privateKeyToUse = player2LocalKeys.private
     }
-    else {
-      yield put(snackbar.actions.setError(`this game cannot be played anymore`))
-      return
-    }
-
-    if(moveCurrentCode != '-') {
-      yield put(snackbar.actions.setError(`that space is already taken, please choose another`))
-      return
-    }
-    
+  
     const payload = [gameName,'take',moveIndex+1].join(',')
 
     const transactionBytes = transactionUtils.singleTransactionBytes({

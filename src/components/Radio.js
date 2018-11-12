@@ -36,10 +36,8 @@ class RadioField extends React.Component {
     const {
       input,
       label,
-      type,
       name,
       classes,
-      inputProps,
       description,
       disabled,
       meta: { touched, error, warning },

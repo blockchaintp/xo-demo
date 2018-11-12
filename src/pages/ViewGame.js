@@ -10,6 +10,7 @@ import Grid from '@material-ui/core/Grid'
 import OpenIcon from '@material-ui/icons/OpenInNew'
 import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
+import Divider from '@material-ui/core/Divider'
 
 import xoModule from '../store/xo'
 import keysModule from '../store/keys'
@@ -29,6 +30,10 @@ const styles = theme => {
     },
     paperPadding: {
       padding: '10px',
+    },
+    divider: {
+      marginTop: theme.spacing.unit * 2,
+      marginBottom: theme.spacing.unit * 2,
     },
   }
 }
@@ -85,11 +90,20 @@ class ViewGame extends React.Component {
             <div className={ classes.paperPadding }>
               <GameInfo
                 title={ xo.currentGame.name }
-                onBack={ () => xo.viewGames() }
                 player1Keys={ player1Keys }
                 player2Keys={ player2Keys }
                 state={ xo.currentGame.state }
+                currentPlayer={ xo.currentPlayer }
+                onChangeCurrentPlayer={ xo.updateCurrentPlayer }
               />
+              <div className={ classes.divider }></div>
+              <Button
+                className={ classes.button }
+                variant="raised" 
+                onClick={ () => xo.viewGames() }
+              >
+                Back
+              </Button>
             </div>
           </Grid>
           <Grid item xs={12} sm={9}>

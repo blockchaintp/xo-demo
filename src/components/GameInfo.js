@@ -7,6 +7,8 @@ import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import Divider from '@material-ui/core/Divider'
 
+import Radio from './Radio'
+
 const styles = theme => ({
   root: {
     padding: theme.spacing.unit * 2,
@@ -25,6 +27,14 @@ const styles = theme => ({
     marginBottom: theme.spacing.unit * 2,
   },
 })
+
+const PLAYER_OPTIONS = [{
+  title: 'Player1',
+  value: '1',
+},{
+  title: 'Player2',
+  value: '2',
+}]
 
 class GameInfo extends React.Component {
 
@@ -58,7 +68,7 @@ class GameInfo extends React.Component {
     }
   }
 
-  getNextMove() {
+  getNextMoveDescription() {
     const {
       player1Keys,
       player2Keys,
@@ -66,10 +76,10 @@ class GameInfo extends React.Component {
     } = this.props
 
     if(state == 'P1-NEXT') {
-      return this.getMoveDescription(player1Keys)
+      return null
     }
     else if(state == 'P2-NEXT') {
-      return this.getMoveDescription(player2Keys)
+      return null
     }
     else if(state == 'P1-WIN') {
       return 'Player 1 has won the game!'
@@ -81,8 +91,24 @@ class GameInfo extends React.Component {
       return 'The game was a draw.'
     }
     else {
-      return 'Unknown'
+      return null
     }
+  }
+
+  getNextMove() {
+    const { classes } = this.props
+    const desc = this.getNextMoveDescription()
+
+    if(!desc) return null
+
+    return (
+      <div>
+        <Divider className={ classes.divider } />
+        <Typography variant='body2'>
+          { desc }
+        </Typography>
+      </div>
+    )
   }
 
   render() {
@@ -105,20 +131,27 @@ class GameInfo extends React.Component {
 
         <Divider className={ classes.divider } />
 
-        <Typography variant='body2'>
-          { this.getNextMove() }
-        </Typography>
+        <div>
+          <Radio
+            options={ PLAYER_OPTIONS }
+            input={{
+              value: this.props.currentPlayer,
+              onChange: (ev) => this.props.onChangeCurrentPlayer(ev.target.value),
+            }}
+            name='currentPlayer'
+            label='Current Player'
+            description='Choose the player to submit a transaction as'
+            meta={{
+              touched: false,
+              error: '',
+              warning: '',
+            }}
+            compact
+          />
+        </div>
 
-        <Divider className={ classes.divider } />
-
-        <Button
-          className={ classes.button }
-          variant="raised" 
-          onClick={ () => this.props.onBack() }
-        >
-          Back
-        </Button>
-
+        { this.getNextMove() }
+        
       </Paper>
     )
   }

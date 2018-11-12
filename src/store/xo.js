@@ -17,6 +17,7 @@ const state = {
   games: [],
   currentPlayer: '1',
   currentGame: null,
+  lastTransactionStatus: null,
   newGameWindowOpen: false,
   newGameError: null,
 }
@@ -35,6 +36,13 @@ const actions = {
   loadGameLoopStop: () => ({
     type: 'GAMES_LOAD_GAME_LOOP_STOP',
   }),
+  loadBatchStatusLoop: (id) => ({
+    type: 'GAMES_LOAD_BATCH_STATUS_LOOP',
+    id,
+  }),
+  loadBatchStatusLoopStop: () => ({
+    type: 'GAMES_LOAD_BATCH_STATUS_LOOP_STOP',
+  }),
   setGames: (games) => ({
     type: 'GAMES_SET_GAMES',
     games,
@@ -42,6 +50,10 @@ const actions = {
   setCurrentGame: (game) => ({
     type: 'GAMES_SET_CURRENT_GAME',
     game,
+  }),
+  setLastTransactionStatus: (value) => ({
+    type: 'GAMES_SET_LAST_TRANSACTION_STATUS',
+    value,
   }),
   resetNewGameForm: () => initialize('gameForm', {}),
   submitNewGameForm: () => ({
@@ -93,7 +105,10 @@ const mutations = {
   },
   GAMES_UPDATE_CURRENT_PLAYER: (state, action) => {
     state.currentPlayer = action.value
-  }
+  },
+  GAMES_SET_LAST_TRANSACTION_STATUS: (state, action) => {
+    state.lastTransactionStatus = action.value
+  },
 }
 
 function* loadGameListLoop() {
@@ -126,6 +141,40 @@ function* loadGameLoop(name) {
   }
 }
 
+function* loadBatchStatusLoop(id) {
+  while (true) {
+    try {
+      const batchStatusResponse = yield call(xoApi.getBatchStatus, id)
+      const batchStatusData = batchStatusResponse.data.data[0]
+
+      if(batchStatusData.status != "PENDING") {
+        const error = batchStatusData.status == "INVALID" ?
+          batchStatusData.invalid_transactions[0].message :
+          null
+
+        if(batchStatusData.status == "INVALID") {
+          yield put(snackbar.actions.setError('Transaction failed'))
+        }
+        else {
+          yield put(snackbar.actions.setError('Transaction committed'))
+        }
+
+        yield put(actions.setLastTransactionStatus({
+          id: batchStatusData.id,
+          status: batchStatusData.status,
+          error,
+        }))
+        yield put(actions.loadBatchStatusLoopStop())
+      }
+    } catch(e) {
+      // we don't quit on errors because a 404 might mean the batch has not made it yet
+    }
+
+    yield call(delay, 1000)
+    
+  }
+}
+
 const sagas = createSagas(sagaErrorWrapper({
   GAMES_LOAD_LIST_LOOP_START: function* (action) {
     const loadGameListLoopTask = yield fork(loadGameListLoop)
@@ -136,6 +185,11 @@ const sagas = createSagas(sagaErrorWrapper({
     const loadGameLoopTask = yield fork(loadGameLoop, action.name)
     yield take(action => action.type == 'GAMES_LOAD_GAME_LOOP_STOP')
     yield cancel(loadGameLoopTask)
+  },
+  GAMES_LOAD_BATCH_STATUS_LOOP: function* (action) {
+    const loadBatchStatusLoopTask = yield fork(loadBatchStatusLoop, action.id)
+    yield take(action => action.type == 'GAMES_LOAD_BATCH_STATUS_LOOP_STOP')
+    yield cancel(loadBatchStatusLoopTask)
   },
   GAMES_SUBMIT_NEW_GAME: function* (action) {
     const formValues = yield select(state => getFormValues('gameForm')(state))
@@ -235,9 +289,19 @@ const sagas = createSagas(sagaErrorWrapper({
       payload,
     })
 
+    // cancel any rogue batch status loops
+    yield put(actions.loadBatchStatusLoopStop())
+
     try {
       const response = yield call(xoApi.submitTransaction, transactionBytes)
       yield put(snackbar.actions.setMessage(`transaction submitted`))
+
+      const JSONResponse = JSON.parse(response)
+
+      const parts = JSONResponse.link.split('?id=')
+      const id = parts[1]
+
+      yield put(actions.loadBatchStatusLoop(id))
     } catch(e) {
       console.log('-------------------------------------------');
       console.error(e)

@@ -17,6 +17,7 @@ import keysModule from '../store/keys'
 import validatorModule from '../store/validator'
 
 import GameInfo from '../components/GameInfo'
+import BatchInfo from '../components/BatchInfo'
 import GameBoard from '../components/GameBoard'
 import TransactionList from '../components/TransactionList'
 import TransactionTable from '../components/TransactionTable'
@@ -30,6 +31,9 @@ const styles = theme => {
     },
     paperPadding: {
       padding: '10px',
+    },
+    board: {
+      textAlign: 'center',
     },
     divider: {
       marginTop: theme.spacing.unit * 2,
@@ -55,6 +59,7 @@ class ViewGame extends React.Component {
 
   componentWillUnmount() {
     this.props.xo.loadGameLoopStop()
+    this.props.xo.loadBatchStatusLoopStop()
     this.props.xo.setCurrentGame(null)
     this.props.validator.loadTransactionsLoopStop()
   }
@@ -86,7 +91,7 @@ class ViewGame extends React.Component {
           container 
           spacing={24}
         >
-          <Grid item xs={12} sm={3}>
+          <Grid item sm={12} md={3}>
             <div className={ classes.paperPadding }>
               <GameInfo
                 title={ xo.currentGame.name }
@@ -96,21 +101,26 @@ class ViewGame extends React.Component {
                 currentPlayer={ xo.currentPlayer }
                 onChangeCurrentPlayer={ xo.updateCurrentPlayer }
               />
-              <div className={ classes.divider }></div>
-              <Button
-                className={ classes.button }
-                variant="raised" 
-                onClick={ () => xo.viewGames() }
-              >
-                Back
-              </Button>
             </div>
           </Grid>
-          <Grid item xs={12} sm={9}>
+          <Grid item sm={12} md={6} className={ classes.board }>
             <GameBoard
               gameState={ xo.currentGame.board }
               onMove={ (index) => xo.makeMove(index) }
             />
+          </Grid>
+          <Grid item sm={12} md={3}>
+            {
+              xo.lastTransactionStatus ? (
+                <BatchInfo
+                  title='Batch Status'
+                  id={ xo.lastTransactionStatus.id }
+                  status={ xo.lastTransactionStatus.status }
+                  error={ xo.lastTransactionStatus.error }
+                />
+              ) : null
+            }
+            
           </Grid>
         </Grid>
         <Grid 

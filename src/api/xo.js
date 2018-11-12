@@ -25,7 +25,7 @@ export default {
       xhr.onreadystatechange = function (oEvent) {  
         if (xhr.readyState === 4) {  
           if (xhr.status === 202) {  
-            resolve()  
+            resolve(oEvent.currentTarget.responseText)
           } else {
             reject(oEvent.currentTarget.responseText)
           }  
@@ -33,6 +33,10 @@ export default {
       }
       xhr.send(payload)
     })
+  },
+
+  getBatchStatus(id) {
+    return axios.get(url(`/batch_statuses?id=${id}`))
   },
 
   url,

@@ -51,10 +51,10 @@ class GameInfo extends React.Component {
       )
     }
 
-    const playerType = playerKeys.game == playerKeys.local ? 'you' : 'someone else'
+    const playerType = playerKeys.game == this.props.player1Keys.local || playerKeys.game == this.props.player2Keys.local ? 'you' : 'external'
     return (
       <Typography variant='body1'>
-        Player{ player }: <b className={ classes.smallText }>{ playerKeys.game.substring(0, 16) }</b> ({ playerType })
+        Player{ player }: <span>{ playerKeys.game.substring(0, 16) }</span> ({ playerType })
       </Typography>
     )
   }

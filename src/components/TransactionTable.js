@@ -17,6 +17,9 @@ const styles = theme => ({
     marginTop: theme.spacing.unit * 2,
     marginBottom: theme.spacing.unit * 2,
   },
+  tableContainer: {
+    overflowX: 'auto',
+  }
 })
 
 class TransactionTable extends React.Component {
@@ -53,10 +56,12 @@ class TransactionTable extends React.Component {
         <Typography variant='title'>Transaction List</Typography>
         <Typography variant='body1'>(the 10 most recent transactions)</Typography>
         <Divider className={ classes.divider } />
-        <GenericTableSimple
-          fields={ fields }
-          data={ data }
-        />
+        <div className={ classes.tableContainer }>
+          <GenericTableSimple
+            fields={ fields }
+            data={ data }
+          />
+        </div>
       </Paper>
     )
   }

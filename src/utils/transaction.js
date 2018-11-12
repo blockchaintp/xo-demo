@@ -12,6 +12,8 @@ const getSigner = (privateKeyHex) => {
   return new CryptoFactory(context).newSigner(privateKey)
 }
 
+let nonce = 0
+
 const createTransaction = (opts) => {
 
   const {
@@ -23,6 +25,8 @@ const createTransaction = (opts) => {
   const address = addressUtils.getGameAddress(gameName)
   const signer = getSigner(privateKeyHex)
 
+  nonce++
+
   const transactionHeaderBytes = protobuf.TransactionHeader.encode({
     familyName: 'xo',
     familyVersion: '1.0',
@@ -32,6 +36,7 @@ const createTransaction = (opts) => {
     batcherPublicKey: signer.getPublicKey().asHex(),
     dependencies: [],
     payloadSha512: createHash('sha512').update(payload).digest('hex'),
+    nonce: nonce.toString(),
   }).finish()
 
   const signature = signer.sign(transactionHeaderBytes)

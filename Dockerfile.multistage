@@ -8,7 +8,10 @@ RUN yarn install
 COPY ./ /app/frontend
 RUN yarn run build
 
-FROM nginx
+FROM nginx:alpine
 MAINTAINER kai@blockchaintp.com
-COPY ./nginx.conf /etc/nginx/nginx.conf
+RUN apk update && apk upgrade && apk add bash
+COPY ./nginx.conf /etc/nginx/nginx.template.conf
+COPY ./run.sh /run.sh
 COPY --from=build-env /app/frontend/dist /www
+ENTRYPOINT ["bash", "run.sh"]

@@ -10,6 +10,7 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import Button from '@material-ui/core/Button'
+import Typography from '@material-ui/core/Typography'
 
 import KeyEditor from '../components/KeyEditor'
 import xoModule from '../store/xo'
@@ -21,6 +22,9 @@ const styles = theme => {
   return {
     root: {
       padding: theme.spacing.unit * 4,
+    },
+    title: {
+      marginBottom: theme.spacing.unit * 2,
     }
   }
 }
@@ -111,7 +115,7 @@ class Keys extends React.Component {
     if(!playerKeys) return null
     return (
       <KeyEditor
-        title={`Player ${player}`}
+        title=''
         privateKey={ playerKeys.private }
         publicKey={ playerKeys.public }
         onRegenerate={ () => this.regenerateKeys(player) }
@@ -131,6 +135,9 @@ class Keys extends React.Component {
 
     return (
       <div className={ classes.root }>
+        <Typography className={ classes.title } color="inherit" variant="title">
+          Keys
+        </Typography>
         <Grid 
           container 
           spacing={24}

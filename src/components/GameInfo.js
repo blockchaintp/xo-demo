@@ -28,14 +28,6 @@ const styles = theme => ({
   },
 })
 
-const PLAYER_OPTIONS = [{
-  title: 'Player1',
-  value: '1',
-},{
-  title: 'Player2',
-  value: '2',
-}]
-
 class GameInfo extends React.Component {
 
   getPlayer(player, playerKeys) {
@@ -46,7 +38,7 @@ class GameInfo extends React.Component {
     if(!playerKeys.game) {
       return (
         <Typography variant='body1'>
-          Player{ player }: <b>unknown</b>
+          P{ player }: <b>unknown</b>
         </Typography>
       )
     }
@@ -54,7 +46,7 @@ class GameInfo extends React.Component {
     const playerType = playerKeys.game == this.props.player1Keys.local || playerKeys.game == this.props.player2Keys.local ? 'you' : 'external'
     return (
       <Typography variant='body1'>
-        Player{ player }: <span>{ playerKeys.game.substring(0, 16) }</span> ({ playerType })
+        P{ player }: <span>{ playerKeys.game.substring(0, 16) }...</span> ({ playerType })
       </Typography>
     )
   }
@@ -82,10 +74,10 @@ class GameInfo extends React.Component {
       return null
     }
     else if(state == 'P1-WIN') {
-      return 'Player 1 has won the game!'
+      return 'P1 has won the game!'
     }
     else if(state == 'P2-WIN') {
-      return 'Player 2 has won the game!'
+      return 'P2 has won the game!'
     }
     else if(state == 'TIE') {
       return 'The game was a draw.'
@@ -114,6 +106,15 @@ class GameInfo extends React.Component {
   render() {
     const { classes } = this.props
 
+    const PLAYER_OPTIONS = [{
+      title: `Key ${this.props.player1Keys.local.substring(0, 16)}...`,
+      value: '1',
+    },{
+      title: `Key ${this.props.player2Keys.local.substring(0, 16)}...`,
+      value: '2',
+    }]
+
+
     return (
       <Paper className={ classes.root }>
         <Typography variant='title' className={ classes.title }>
@@ -139,8 +140,8 @@ class GameInfo extends React.Component {
               onChange: (ev) => this.props.onChangeCurrentPlayer(ev.target.value),
             }}
             name='currentPlayer'
-            label='Current Player'
-            description='Choose the player to submit a transaction as'
+            label='Submit transaction as'
+            description='Choose the key to submit a transaction as'
             meta={{
               touched: false,
               error: '',

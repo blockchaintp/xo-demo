@@ -23,7 +23,7 @@ node {
 	} 
 	
 	// Build 
-	stage("Build Sextant") {
+	stage("Build") {
 	    sh "docker-compose -f docker-compose.yml build"
 	}
 	

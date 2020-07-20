@@ -30,6 +30,6 @@ docker exec -it sawtooth-validator-default sawset proposal create \
 docker exec -it sawtooth-validator-default sawtooth settings list --url http://rest-api:8008
 ```
 
-The app will communicate to the rest api via `localhost:8008`
+The application will communicate to the rest api via `localhost:8008`
 
 You can view it in the browser at `http://localhost:8080`

@@ -18,7 +18,7 @@
 
 pipeline {
   agent any
-  
+
   triggers {cron('H H * * *')}
 
   options {
@@ -70,13 +70,6 @@ pipeline {
   }
 
   post {
-      always {
-        sh '''
-          for img in `docker images --filter reference="*:$ISOLATION_ID" --format "{{.Repository}}"`; do
-            docker rmi -f $img:$ISOLATION_ID
-          done
-        '''
-      }
       success {
           archiveArtifacts '*.tgz, *.zip'
       }

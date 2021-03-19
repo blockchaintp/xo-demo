@@ -1,8 +1,5 @@
 # CHANGELOG
 
-## Unreleased
-
-
 ## v1.0.3
 
 * fix(lint): fix commit lint config [view commit](https://github.com/catenasys/xo-demo/commit/a8e099b531e3d8d8b96abd806ee470729c5ee077)

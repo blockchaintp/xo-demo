@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## Unreleased
+
+* Bump url-parse from 1.4.3 to 1.5.3 [view commit](https://github.com/catenasys/xo-demo/commit/4499312bf7913e72ed94cef6e2fb3be353eabdcc)
+* Bump elliptic from 6.4.1 to 6.5.4 [view commit](https://github.com/catenasys/xo-demo/commit/318e9d386a18ca6c6289e1325d03093efaf60639)
+* Merge pull request #23 from catenasys/dependabot/npm_and_yarn/axios-0.21.1 [view commit](https://github.com/catenasys/xo-demo/commit/10dff537e33514627e0b481866b650dd04b6db5f)
+* Bump ua-parser-js from 0.7.18 to 0.7.28 [view commit](https://github.com/catenasys/xo-demo/commit/ea9b3f357df4c9dee453035bb5cbdc8aaf4ba121)
+* Bump path-parse from 1.0.6 to 1.0.7 [view commit](https://github.com/catenasys/xo-demo/commit/46e35fca00b3537b779b68fc4056c343258f09cd)
+* Bump lodash from 4.17.15 to 4.17.21 [view commit](https://github.com/catenasys/xo-demo/commit/5a68ccb70cb760918c724f687c6dda0057001038)
+* Bump browserslist from 4.1.0 to 4.16.7 [view commit](https://github.com/catenasys/xo-demo/commit/9447e93fd8842e3a29394a7fa74ca60a7f1058df)
+* Bump tar from 4.4.6 to 4.4.17 [view commit](https://github.com/catenasys/xo-demo/commit/946b7d089e75ab71387812a7968f1f0a72106933)
+* Bump dns-packet from 1.3.1 to 1.3.4 [view commit](https://github.com/catenasys/xo-demo/commit/09b32735eef6d07d7ea6df075210cbcc27e82ef1)
+
 ## v1.0.3
 
 * fix(lint): fix commit lint config [view commit](https://github.com/catenasys/xo-demo/commit/a8e099b531e3d8d8b96abd806ee470729c5ee077)

@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+* build(deps): bump ini from 1.3.5 to 1.3.8 [view commit](https://github.com/catenasys/xo-demo/commit/13c64403bfbe7627c2fbd247c20effc64a3b0fe2)
+* build(deps): bump axios from 0.21.1 to 0.21.2 [view commit](https://github.com/catenasys/xo-demo/commit/0d9a5bf4af7331eceac68ca77dffc9036e04f199)
+* build(deps): bump tar from 4.4.17 to 4.4.19 [view commit](https://github.com/catenasys/xo-demo/commit/e5f287c1c97a1d9f1275d2335b5224e9209d5fbc)
 * Bump url-parse from 1.4.3 to 1.5.3 [view commit](https://github.com/catenasys/xo-demo/commit/4499312bf7913e72ed94cef6e2fb3be353eabdcc)
 * Bump elliptic from 6.4.1 to 6.5.4 [view commit](https://github.com/catenasys/xo-demo/commit/318e9d386a18ca6c6289e1325d03093efaf60639)
 * Merge pull request #23 from catenasys/dependabot/npm_and_yarn/axios-0.21.1 [view commit](https://github.com/catenasys/xo-demo/commit/10dff537e33514627e0b481866b650dd04b6db5f)

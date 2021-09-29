@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## Unreleased
+## v1.0.4
 
 * build(deps): bump ini from 1.3.5 to 1.3.8 [view commit](https://github.com/catenasys/xo-demo/commit/13c64403bfbe7627c2fbd247c20effc64a3b0fe2)
 * build(deps): bump axios from 0.21.1 to 0.21.2 [view commit](https://github.com/catenasys/xo-demo/commit/0d9a5bf4af7331eceac68ca77dffc9036e04f199)

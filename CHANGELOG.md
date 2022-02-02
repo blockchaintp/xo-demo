@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## Unreleased
+## v1.0.5
 
 * build(deps): bump follow-redirects from 1.14.3 to 1.14.7 [view commit](https://github.com/catenasys/xo-demo/commit/e2bc0eed6ee18d0ffa9dd7675118d92edbad577c)
 

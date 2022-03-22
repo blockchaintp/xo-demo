@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## Unreleased
+
+* build(deps): bump url-parse from 1.5.3 to 1.5.10 [view commit](https://github.com/catenasys/xo-demo/commit/e58b9caf2cb2bf42d1e6b1ccebccab527265f6d6)
+* build(deps): bump follow-redirects from 1.14.7 to 1.14.9 [view commit](https://github.com/catenasys/xo-demo/commit/fd517fb6cd162362fc08eab42690941b0e12c051)
+* build(deps): bump lodash-es from 4.17.15 to 4.17.21 [view commit](https://github.com/catenasys/xo-demo/commit/0cc756557d71ae195eef8647bbacc69726e70d88)
+* build(deps): bump simple-get from 2.8.1 to 2.8.2 [view commit](https://github.com/catenasys/xo-demo/commit/8417a6d2b1178fb2acd80c805629e2bbb562ba92)
+* build(deps): bump ajv from 6.5.3 to 6.12.6 [view commit](https://github.com/catenasys/xo-demo/commit/548d524bddddd23afd85c8ca3b76062fb7d34e85)
+
 ## v1.0.5
 
 * build(deps): bump follow-redirects from 1.14.3 to 1.14.7 [view commit](https://github.com/catenasys/xo-demo/commit/e2bc0eed6ee18d0ffa9dd7675118d92edbad577c)

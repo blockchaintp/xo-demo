@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+* build(deps): bump minimist from 1.2.0 to 1.2.6 [view commit](https://github.com/catenasys/xo-demo/commit/7e260562b098e5cc8d080c2bb9d35aa8e2697a3a)
 * build(deps): bump url-parse from 1.5.3 to 1.5.10 [view commit](https://github.com/catenasys/xo-demo/commit/e58b9caf2cb2bf42d1e6b1ccebccab527265f6d6)
 * build(deps): bump follow-redirects from 1.14.7 to 1.14.9 [view commit](https://github.com/catenasys/xo-demo/commit/fd517fb6cd162362fc08eab42690941b0e12c051)
 * build(deps): bump lodash-es from 4.17.15 to 4.17.21 [view commit](https://github.com/catenasys/xo-demo/commit/0cc756557d71ae195eef8647bbacc69726e70d88)

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+* build(deps): bump protobufjs from 6.8.8 to 6.11.3 [view commit](https://github.com/catenasys/xo-demo/commit/b82fc93cbad239c0c8c8c2f1b0ba7d133689a9c4)
+* build(deps): bump eventsource from 1.0.7 to 1.1.1 [view commit](https://github.com/catenasys/xo-demo/commit/95430383adeb258d1e1143a108bf0209e1cb8375)
 * build(deps): bump minimist from 1.2.0 to 1.2.6 [view commit](https://github.com/catenasys/xo-demo/commit/7e260562b098e5cc8d080c2bb9d35aa8e2697a3a)
 * build(deps): bump url-parse from 1.5.3 to 1.5.10 [view commit](https://github.com/catenasys/xo-demo/commit/e58b9caf2cb2bf42d1e6b1ccebccab527265f6d6)
 * build(deps): bump follow-redirects from 1.14.7 to 1.14.9 [view commit](https://github.com/catenasys/xo-demo/commit/fd517fb6cd162362fc08eab42690941b0e12c051)

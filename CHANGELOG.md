@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+* build(deps): bump ua-parser-js from 0.7.28 to 0.7.33 [view commit](https://github.com/catenasys/xo-demo/commit/b95dc72e5aed7556b08036b00ae53b0d45bbeb4a)
+* build(deps): bump decode-uri-component from 0.2.0 to 0.2.2 [view commit](https://github.com/catenasys/xo-demo/commit/eb2618095b8c377965041ec42d6b44f89472a610)
+* build(deps): bump express from 4.16.3 to 4.18.2 [view commit](https://github.com/catenasys/xo-demo/commit/134fb58a600014b01cb206bfec8a661a90c671a6)
+* build(deps): bump minimatch from 3.0.4 to 3.1.2 [view commit](https://github.com/catenasys/xo-demo/commit/a9a0440650cbcd58da18988f8509778efae61681)
+* build(deps): bump css-what from 2.1.0 to 2.1.3 [view commit](https://github.com/catenasys/xo-demo/commit/f1ec9c70dac8e0012374a62fb7b63f77b487c8c2)
 * build(deps): bump shell-quote from 1.6.1 to 1.7.3 [view commit](https://github.com/catenasys/xo-demo/commit/2ce67ff1f02ee7a93b4db1b6f14c4d98cbde838e)
 * build(deps): bump protobufjs from 6.8.8 to 6.11.3 [view commit](https://github.com/catenasys/xo-demo/commit/b82fc93cbad239c0c8c8c2f1b0ba7d133689a9c4)
 * build(deps): bump eventsource from 1.0.7 to 1.1.1 [view commit](https://github.com/catenasys/xo-demo/commit/95430383adeb258d1e1143a108bf0209e1cb8375)
